@@ -1,0 +1,101 @@
+import React, { useState } from 'react';
+
+const DateTimePicker = ({ date, setDate, time, setTime, duration, setDuration, errors }) => {
+  const formatDuration = (duration) => {
+    const hours = Math.floor(duration / 60);
+    const minutes = duration % 60;
+    return `${hours}h ${minutes}m`;
+  };
+
+  const handleDurationUp = () => {
+    setDuration(duration + 15);
+  };
+
+  const handleDurationDown = () => {
+    if (duration > 15) {
+      setDuration(duration - 15);
+    }
+  };
+
+  return (
+    <div>
+      <h3 className="text-lg font-bold mb-2">Date, Time, and Duration</h3>
+      <div className="flex items-center space-x-4">
+        <div>
+          <label htmlFor="date" className="block font-bold">
+            Date
+          </label>
+          <input
+            type="date"
+            id="date"
+            name="date"
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
+            required
+            className="border border-gray-300 rounded-md py-2 px-3"
+          />
+          {errors.date && <p className="text-red-500">{errors.date}</p>}
+        </div>
+        <div>
+          <label htmlFor="time" className="block font-bold">
+            Time
+          </label>
+          <input
+            type="time"
+            id="time"
+            name="time"
+            value={time}
+            onChange={(e) => setTime(e.target.value)}
+            required
+            className="border border-gray-300 rounded-md py-2 px-3"
+          />
+          {errors.time && <p className="text-red-500">{errors.time}</p>}
+        </div>
+        <div className="flex items-center">
+          <div>
+            <label htmlFor="duration" className="block font-bold">
+              Duration
+            </label>
+            <div className="relative">
+              <input
+                type="text"
+                id="duration"
+                name="duration"
+                value={formatDuration(duration)}
+                readOnly
+                className="border border-gray-300 rounded-md py-2 pl-3 pr-8"
+              />
+              <div className="absolute inset-y-0 right-0 flex items-center pr-2">
+                <button
+                  type="button"
+                  className="bg-gray-200 rounded-md p-1 hover:bg-gray-300 mr-1"
+                  onClick={handleDurationUp}
+                >
+                  <svg className="h-4 w-4 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+                  </svg>
+                </button>
+                <button
+                  type="button"
+                  className="bg-gray-200 rounded-md p-1 hover:bg-gray-300"
+                  onClick={handleDurationDown}
+                >
+                  <svg className="h-4 w-4 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+            {errors.duration && <p className="text-red-500">{errors.duration}</p>}
+          </div>
+        </div>
+      </div>
+      <p className="mt-2">
+        This event will take place on the {new Date(date).toLocaleDateString()} from {time} until{' '}
+        {new Date(new Date(date).getTime() + duration * 60000).toLocaleTimeString([], { hour: 'numeric', minute: 'numeric', hour12: true })}
+      </p>
+    </div>
+  );
+};
+
+export default DateTimePicker;
