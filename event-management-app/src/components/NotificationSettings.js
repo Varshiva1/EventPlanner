@@ -1,5 +1,3 @@
-import React from 'react';
-
 const NotificationSettings = ({ notifications, setNotifications }) => {
   const handleNotificationChange = (service) => {
     setNotifications({
@@ -17,8 +15,15 @@ const NotificationSettings = ({ notifications, setNotifications }) => {
     { value: '0', label: 'No reminder' },
     { value: '3600', label: '1 hour before event' },
     { value: '86400', label: '1 day before event' },
-  
   ];
+
+  const handleEmailClick = () => {
+    handleNotificationChange('email');
+  };
+
+  const handleSlackClick = () => {
+    handleNotificationChange('slack');
+  };
 
   return (
     <div className="flex items-center">
@@ -27,20 +32,22 @@ const NotificationSettings = ({ notifications, setNotifications }) => {
         <div className="flex items-center space-x-4">
           <div>
             <button
+              type="button"
               className={`py-2 px-4 rounded-md ${
                 notifications.email ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-700'
               }`}
-              onClick={() => handleNotificationChange('email')}
+              onClick={handleEmailClick}
             >
               Email
             </button>
           </div>
           <div>
             <button
+              type="button"
               className={`py-2 px-4 rounded-md ${
                 notifications.slack ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-700'
               }`}
-              onClick={() => handleNotificationChange('slack')}
+              onClick={handleSlackClick}
             >
               Slack
             </button>

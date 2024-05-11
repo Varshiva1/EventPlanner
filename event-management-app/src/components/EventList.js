@@ -55,10 +55,10 @@ const EventList = () => {
   };
 
   return (
-    <div>
+    <div className="max-w-5xl mx-auto bg-white rounded-md shadow-md p-6">
       <h2>Event List</h2>
       {events.map((event) => (
-        <div key={event.id} className="relative">
+        <div key={event.id} className="relative mb-10">
           <h3>{event.name}</h3>
           <p>Date: {event.date}</p>
           <p>Time: {event.time}</p>
@@ -85,8 +85,8 @@ const EventList = () => {
         </div>
       ))}
       {showDescriptionModal && (
-        <div>
-          <h3>Add/Edit Description</h3>
+         <div className="bg-white rounded-md shadow-md p-4 mb-4">
+           <h3 className="text-xl font-bold mb-4">Add/Edit Description</h3>
           <textarea
           className="w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500"
             value={description}
