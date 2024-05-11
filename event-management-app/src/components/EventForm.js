@@ -42,7 +42,7 @@ const EventForm = () => {
     }
 
     try {
-      await axios.post('http://localhost:3000/api/events', formData);
+      await axios.post('http://localhost:4000/api/events', formData);
       alert('Event created successfully');
       setFormData({
         name: '',
