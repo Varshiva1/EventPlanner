@@ -1,8 +1,7 @@
 const Sequelize = require('sequelize');
-
-const sequelize = new Sequelize('event_management', 'your_username', 'your_password', {
+const sequelize = new Sequelize('event_management',  'postgres', 'null', {
   host: 'localhost',
-  dialect: 'mysql',
+  dialect: 'postgres',
 });
 
 const Event = sequelize.define('event', {
@@ -18,7 +17,7 @@ const Event = sequelize.define('event', {
     allowNull: false,
   },
   time: {
-    type: Sequelize.STRING, // Change to STRING
+    type: Sequelize.STRING,
     allowNull: false,
   },
   duration: {
@@ -29,13 +28,31 @@ const Event = sequelize.define('event', {
     type: Sequelize.STRING,
   },
   guests: {
-    type: Sequelize.JSON,
+    type: Sequelize.TEXT,
+    get: function() {
+      return JSON.parse(this.getDataValue('guests'));
+    },
+    set: function(value) {
+      this.setDataValue('guests', JSON.stringify(value));
+    },
   },
   notifications: {
-    type: Sequelize.JSON,
+    type: Sequelize.TEXT,
+    get: function() {
+      return JSON.parse(this.getDataValue('notifications'));
+    },
+    set: function(value) {
+      this.setDataValue('notifications', JSON.stringify(value));
+    },
   },
   files: {
-    type: Sequelize.JSON,
+    type: Sequelize.TEXT,
+    get: function() {
+      return JSON.parse(this.getDataValue('files'));
+    },
+    set: function(value) {
+      this.setDataValue('files', JSON.stringify(value));
+    },
   },
 });
 
