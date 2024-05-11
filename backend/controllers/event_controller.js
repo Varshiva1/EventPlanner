@@ -54,3 +54,19 @@ exports.update = (req, res) => {
     })
     .catch((err) => res.status(500).send({ message: err.message }));
 };
+exports.delete = (req, res) => {
+  const { id } = req.params;
+
+  Event.findByPk(id)
+    .then((event) => {
+      if (!event) {
+        return res.status(404).send({ message: 'Event not found' });
+      }
+
+      event
+        .destroy()
+        .then(() => res.send({ message: 'Event deleted successfully' }))
+        .catch((err) => res.status(500).send({ message: err.message }));
+    })
+    .catch((err) => res.status(500).send({ message: err.message }));
+};

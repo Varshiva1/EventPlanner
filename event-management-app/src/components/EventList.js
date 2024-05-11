@@ -31,9 +31,9 @@ const EventList = () => {
 
   const handleSaveDescription = async () => {
     try {
-        await axios.put(`http://localhost:4000/api/events/${selectedEventId}`, {
-            description,
-          });
+      await axios.put(`http://localhost:4000/api/events/${selectedEventId}`, {
+        description,
+      });
       const updatedEvents = events.map((event) =>
         event.id === selectedEventId ? { ...event, description } : event
       );
@@ -44,57 +44,70 @@ const EventList = () => {
     }
   };
 
+  const handleDeleteEvent = async (eventId) => {
+    try {
+      await axios.delete(`http://localhost:4000/api/events/${eventId}`);
+      const updatedEvents = events.filter((event) => event.id !== eventId);
+      setEvents(updatedEvents);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
-    <div className="max-w-4xl mx-auto bg-white rounded-md shadow-md p-6">
-      <h2 className="text-2xl font-bold mb-4">Event List</h2>
-      <div className="grid grid-cols-1 gap-4">
-        {events.map((event) => (
-          <div key={event.id} className="bg-gray-100 rounded-md p-4">
-            <h3 className="text-xl font-bold">{event.name}</h3>
-            <p>Date: {event.date}</p>
-            <p>Time: {event.time}</p>
-            <p>Duration: {event.duration}</p>
-            <p>Location: {event.location}</p>
-            <p>Guests: {event.guests.map((guest) => guest).join(', ')}</p>
-            <p>Description: {event.description || 'No description'}</p>
+    <div>
+      <h2>Event List</h2>
+      {events.map((event) => (
+        <div key={event.id} className="relative">
+          <h3>{event.name}</h3>
+          <p>Date: {event.date}</p>
+          <p>Time: {event.time}</p>
+          <p>Duration: {event.duration}</p>
+          <p>Location: {event.location}</p>
+          <p>Guests: {event.guests.map((guest) => guest).join(', ')}</p>
+          <p>Description: {event.description || 'No description'}</p>
+          <div className="absolute top-0 right-0">
             <button
               type="button"
-              className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 mt-2"
+              className="bg-blue-500 text-white px-1 py-1 rounded-md hover:bg-blue-500 mr-1"
               onClick={() => handleShowDescriptionModal(event.id)}
             >
               {event.description ? 'Edit Description' : 'Add Description'}
             </button>
+            <button
+              type="button"
+              className="bg-red-500 text-white px-2 py-1 rounded-md hover:bg-red-500"
+              onClick={() => handleDeleteEvent(event.id)}
+            >
+              Delete
+            </button>
           </div>
-        ))}
-      </div>
-
+        </div>
+      ))}
       {showDescriptionModal && (
-        <div className="fixed inset-0 flex items-center justify-center z-50">
-          <div className="bg-white rounded-md shadow-md p-6">
-            <h3 className="text-xl font-bold mb-4">Add/Edit Description</h3>
-            <textarea
-              value={description}
-              onChange={handleDescriptionChange}
-              className="w-full border border-gray-300 rounded-md py-2 px-3"
-              rows={4}
-              placeholder="Enter description"
-            />
-            <div className="flex justify-end mt-4">
-              <button
-                type="button"
-                className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 mr-2"
-                onClick={handleSaveDescription}
-              >
-                Save
-              </button>
-              <button
-                type="button"
-                className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600"
-                onClick={() => setShowDescriptionModal(false)}
-              >
-                Cancel
-              </button>
-            </div>
+        <div>
+          <h3>Add/Edit Description</h3>
+          <textarea
+          className="w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500"
+            value={description}
+            onChange={handleDescriptionChange}
+            rows={2}
+          />
+          <div className="flex justify-end mt-4">
+            <button
+              type="button"
+              className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 mr-2"
+              onClick={handleSaveDescription}
+            >
+              Save
+            </button>
+            <button
+              type="button"
+              className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600"
+              onClick={() => setShowDescriptionModal(false)}
+            >
+              Cancel
+            </button>
           </div>
         </div>
       )}
