@@ -55,7 +55,7 @@ const EventList = () => {
             <p>Time: {event.time}</p>
             <p>Duration: {event.duration}</p>
             <p>Location: {event.location}</p>
-            <p>Guests: {event.guests.map((guest) => guest.email).join(', ')}</p>
+            <p>Guests: {event.guests.map((guest) => guest).join(', ')}</p>
             <p>Description: {event.description || 'No description'}</p>
             <button
               type="button"

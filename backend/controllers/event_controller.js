@@ -30,7 +30,9 @@ exports.create = (req, res) => {
 
 exports.findAll = (req, res) => {
   Event.findAll()
-    .then((events) => res.send(events))
+  .then((events) => {
+    console.log("🚀 ~ .then ~ events:", events)
+    res.send(events)})
     .catch((err) => res.status(500).send({ message: err.message }));
 };
 

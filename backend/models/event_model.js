@@ -1,6 +1,5 @@
 const { Model, DataTypes } = require('sequelize');
 
-
 class Event extends Model {
   static init(sequelize) {
     super.init({
@@ -13,7 +12,7 @@ class Event extends Model {
       },
       date: {
         type: DataTypes.DATE,
-        defaultValue: sequelize.literal('NOW()'),
+        defaultValue: DataTypes.NOW, // Use DataTypes.NOW for the default value
         allowNull: false,
       },
       time: {
@@ -28,30 +27,37 @@ class Event extends Model {
         type: DataTypes.STRING(255),
       },
       guests: {
-        type: DataTypes.ARRAY(DataTypes.JSON),
+        type: DataTypes.TEXT, // Store as TEXT
+        get() {
+          const value = this.getDataValue('guests');
+          return value ? JSON.parse(value) : []; // Parse JSON string when getting value
+        },
+        set(value) {
+          this.setDataValue('guests', JSON.stringify(value)); // Serialize array to JSON string when setting value
+        },
       },
       notifications: {
-        type: DataTypes.TEXT,
-        get: function () {
+        type: DataTypes.TEXT, // Use DataTypes.TEXT for large JSON data
+        get() {
           return JSON.parse(this.getDataValue('notifications'));
         },
-        set: function (value) {
+        set(value) {
           this.setDataValue('notifications', JSON.stringify(value));
         },
       },
       files: {
-        type: DataTypes.TEXT,
-        get: function () {
+        type: DataTypes.TEXT, // Use DataTypes.TEXT for large JSON data
+        get() {
           return JSON.parse(this.getDataValue('files'));
         },
-        set: function (value) {
+        set(value) {
           this.setDataValue('files', JSON.stringify(value));
         },
       },
     }, {
-      sequelize, // This is the DataTypes instance that represents a connection to the DB
+      sequelize,
       modelName: 'Event',
-      tableName: 'event',
+      tableName: 'events', // Adjust the table name to match your MySQL table name
       timestamps: false, // Add this only if you are handling timestamps manually
     });
   }
