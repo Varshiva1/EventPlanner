@@ -10,7 +10,7 @@ const EventList = () => {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await axios.get('http://localhost:4000/api/events');
+        const response = await axios.get('http://3.0.97.68:4000/api/events');
         setEvents(response.data);
       } catch (err) {
         console.error(err);
@@ -31,7 +31,7 @@ const EventList = () => {
 
   const handleSaveDescription = async () => {
     try {
-      await axios.put(`http://localhost:4000/api/events/${selectedEventId}`, {
+      await axios.put(`http://3.0.97.68:4000/api/events/${selectedEventId}`, {
         description,
       });
       const updatedEvents = events.map((event) =>
@@ -46,7 +46,7 @@ const EventList = () => {
 
   const handleDeleteEvent = async (eventId) => {
     try {
-      await axios.delete(`http://localhost:4000/api/events/${eventId}`);
+      await axios.delete(`http://3.0.97.68:4000/api/events/${eventId}`);
       const updatedEvents = events.filter((event) => event.id !== eventId);
       setEvents(updatedEvents);
     } catch (err) {
