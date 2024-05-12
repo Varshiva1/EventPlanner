@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 
 const DateTimePicker = ({ date, setDate, time, setTime, duration, setDuration, errors }) => {
+  const [isManualDuration, setIsManualDuration] = useState(false);
+
   const formatDuration = (duration) => {
     const hours = Math.floor(duration / 60);
     const minutes = duration % 60;
@@ -8,13 +10,24 @@ const DateTimePicker = ({ date, setDate, time, setTime, duration, setDuration, e
   };
 
   const handleDurationUp = () => {
-    setDuration(duration + 15);
+    setDuration((prevDuration) => {
+      const newDuration = prevDuration + 30;
+      return newDuration;
+    });
   };
 
   const handleDurationDown = () => {
-    if (duration > 15) {
-      setDuration(duration - 15);
-    }
+    setDuration((prevDuration) => {
+      const newDuration = prevDuration - 30;
+      return newDuration < 30 ? 30 : newDuration;
+    });
+  };
+
+  const handleManualDuration = (e) => {
+    const [hours, minutes] = e.target.value.split(':').map(Number);
+    const totalMinutes = hours * 60 + minutes;
+    setDuration(totalMinutes);
+    setIsManualDuration(true);
   };
 
   return (
@@ -57,19 +70,31 @@ const DateTimePicker = ({ date, setDate, time, setTime, duration, setDuration, e
               Duration
             </label>
             <div className="relative">
-              <input
-                type="text"
-                id="duration"
-                name="duration"
-                value={formatDuration(duration)}
-                readOnly
-                className="border border-gray-300 rounded-md py-2 pl-3 pr-8"
-              />
+              {isManualDuration ? (
+                <input
+                  type="text"
+                  id="duration"
+                  name="duration"
+                  value={formatDuration(duration)}
+                  onChange={handleManualDuration}
+                  className="border border-gray-300 rounded-md py-2 pl-3 pr-8"
+                />
+              ) : (
+                <input
+                  type="text"
+                  id="duration"
+                  name="duration"
+                  value={formatDuration(duration)}
+                  readOnly
+                  className="border border-gray-300 rounded-md py-2 pl-3 pr-8"
+                />
+              )}
               <div className="absolute inset-y-0 right-0 flex items-center pr-2">
                 <button
                   type="button"
                   className="bg-gray-200 rounded-md p-1 hover:bg-gray-300 mr-1"
                   onClick={handleDurationUp}
+                  disabled={isManualDuration}
                 >
                   <svg className="h-4 w-4 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
@@ -79,6 +104,7 @@ const DateTimePicker = ({ date, setDate, time, setTime, duration, setDuration, e
                   type="button"
                   className="bg-gray-200 rounded-md p-1 hover:bg-gray-300"
                   onClick={handleDurationDown}
+                  disabled={isManualDuration}
                 >
                   <svg className="h-4 w-4 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
@@ -92,7 +118,11 @@ const DateTimePicker = ({ date, setDate, time, setTime, duration, setDuration, e
       </div>
       <p className="mt-2">
         This event will take place on the {new Date(date).toLocaleDateString()} from {time} until{' '}
-        {new Date(new Date(date).getTime() + duration * 60000).toLocaleTimeString([], { hour: 'numeric', minute: 'numeric', hour12: true })}
+        {new Date(new Date(date).getTime() + duration * 60000).toLocaleTimeString([], {
+          hour: 'numeric',
+          minute: 'numeric',
+          hour12: true,
+        })}
       </p>
     </div>
   );
