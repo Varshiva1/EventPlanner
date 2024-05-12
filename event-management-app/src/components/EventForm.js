@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 import DateTimePicker from './DateTimePicker';
 import LocationPicker from './LocationPicker';
@@ -43,7 +45,7 @@ const EventForm = () => {
 
     try {
       await axios.post('http://3.0.97.68/api/events', formData);
-      alert('Event created successfully');
+      toast.success('Event created successfully');
       setFormData({
         name: '',
         description: '',
@@ -58,7 +60,7 @@ const EventForm = () => {
       setErrors({});
     } catch (err) {
       console.error(err);
-      alert('Error creating event');
+      toast.error('Error creating event');
     }
   };
 
@@ -66,7 +68,6 @@ const EventForm = () => {
     <div className="max-w-5xl mx-auto bg-white rounded-md shadow-md p-6">
       <h2 className="text-2xl font-bold mb-4">Create Event</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
-       
         <div>
           <label htmlFor="name" className="block font-bold">
             Event Name
@@ -144,6 +145,7 @@ const EventForm = () => {
           Create Event
         </button>
       </form>
+      <ToastContainer position="top-right" />
     </div>
   );
 };
