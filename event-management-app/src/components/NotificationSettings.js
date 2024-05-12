@@ -56,7 +56,7 @@ const NotificationSettings = ({ notifications, setNotifications }) => {
       </div>
       <div>
         <h3 className="font-bold mb-2">Set reminder</h3>
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-4 flex-wrap">
           <div className="flex items-center">
             <select
               id="reminder"

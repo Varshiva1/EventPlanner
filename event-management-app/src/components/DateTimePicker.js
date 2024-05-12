@@ -10,7 +10,14 @@ const DateTimePicker = ({ date, setDate, time, setTime, duration, setDuration, e
   };
 
   const handleDurationUp = () => {
-    setDuration(duration + 30);
+let newDuration;
+if (duration!==""){
+  newDuration = parseInt(duration)+30;
+}else{
+newDuration =30;
+}
+setDuration(newDuration);
+  
   };
 
   const handleDurationDown = () => {
@@ -28,7 +35,7 @@ const DateTimePicker = ({ date, setDate, time, setTime, duration, setDuration, e
   return (
     <div>
       <h3 className="text-lg font-bold mb-2">Date, Time, and Duration</h3>
-      <div className="flex items-center space-x-4">
+      <div className="flex items-center space-x-4 flex-wrap">
         <div>
           <label htmlFor="date" className="block font-bold">
             Date
@@ -59,7 +66,7 @@ const DateTimePicker = ({ date, setDate, time, setTime, duration, setDuration, e
           />
           {errors.time && <p className="text-red-500">{errors.time}</p>}
         </div>
-        <div className="flex items-center">
+        <div>
           <div>
             <label htmlFor="duration" className="block font-bold">
               Duration
@@ -111,14 +118,14 @@ const DateTimePicker = ({ date, setDate, time, setTime, duration, setDuration, e
           </div>
         </div>
       </div>
-      <p className="mt-2">
+     {date!==''? <p className="mt-2">
         This event will take place on the {new Date(date).toLocaleDateString()} from {time} until{' '}
         {new Date(new Date(date).getTime() + duration * 60000).toLocaleTimeString([], {
           hour: 'numeric',
           minute: 'numeric',
           hour12: true,
         })}
-      </p>
+      </p>:''}
     </div>
   );
 };
