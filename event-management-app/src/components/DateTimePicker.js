@@ -31,6 +31,7 @@ setDuration(newDuration);
     setDuration(hours * 60 + minutes);
     setIsManualDuration(true);
   };
+  const today = new Date().toISOString().split('T')[0];
 
   return (
     <div>
@@ -48,6 +49,7 @@ setDuration(newDuration);
             onChange={(e) => setDate(e.target.value)}
             required
             className="border border-gray-300 rounded-md py-2 px-3"
+            min ={today}
           />
           {errors.date && <p className="text-red-500">{errors.date}</p>}
         </div>
@@ -118,14 +120,14 @@ setDuration(newDuration);
           </div>
         </div>
       </div>
-     {date!==''? <p className="mt-2">
+     {/* {date!==''? <p className="mt-2">
         This event will take place on the {new Date(date).toLocaleDateString()} from {time} until{' '}
         {new Date(new Date(date).getTime() + duration * 60000).toLocaleTimeString([], {
           hour: 'numeric',
           minute: 'numeric',
           hour12: true,
         })}
-      </p>:''}
+      </p>:''} */}
     </div>
   );
 };
